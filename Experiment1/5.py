@@ -1,0 +1,10 @@
+x=9
+y=7
+z=x+y
+print("add:",z)
+z=x-y
+print("\nsub:",z)
+z=x*y
+print("\nmul:",z)
+z=x/y
+print("\ndiv:",z)
