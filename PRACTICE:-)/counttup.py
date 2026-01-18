@@ -1,2 +1,2 @@
 tup=('A','B','C','A')
-print(tup.count("A"))
+print(tup.count("A")) 
