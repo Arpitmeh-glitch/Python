@@ -4,3 +4,4 @@ if n in ls:
     print(n,"is present")
 else:
     print(n,"is not present")
+    
