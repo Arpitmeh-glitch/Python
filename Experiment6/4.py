@@ -3,3 +3,4 @@ def fibonacci(n, a=0, b=1):
         return
     print(a)
     fibonacci(n - 1, b, a + b)
+fibonacci(8)
