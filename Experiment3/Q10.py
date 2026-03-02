@@ -1,12 +1,17 @@
-# 1. Write a Python program to print the following pattern using for loop.
-
-for i in range (1,6):
-    for j in range(1,6-i):
-        print(j,end="")
-    for j in range(1-i):
-        print(" ",end="")
-    for j in range(1-i):
-        print("*",end="")
-    for j in range(6-i-1,0,-1):
-        print(j,end="")
-print()
+n = 5
+for i in range(n):
+    for j in range(1, n - i + 1):
+        print(j, end="")
+    for j in range(i):
+        print(" ", end="")
+    for j in range(i):
+        if i == 0:
+            continue
+        print("*", end="")
+        if j != i - 1:
+            print(" ", end="")
+    for j in range(i):
+        print(" ", end="")
+    for j in range(n - i, 0, -1):
+        print(j, end="")
+    print()
