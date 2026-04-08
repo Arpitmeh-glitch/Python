@@ -5,7 +5,7 @@ from tkinterweb import HtmlFrame
 root = tk.Tk()
 root.title("Calc+br")
 root.geometry("480x700") 
-root.configure(bg="#0f172a")
+root.configure(bg="#0f172a",relief="sunken")
 
 expression = ""
 
@@ -96,14 +96,15 @@ entry = tk.Entry(root,
                   font=("Consolas", 22),
                   bg="#020617",
                   fg="#38bdf8",
-                  bd=0,
-                  insertwidth=2,
-                  justify="right")
+                  bd=2,
+                  border="#b51acd",
+                  insertwidth=4,
+                  justify="center")
 entry.pack(fill="x", ipady=12, padx=10, pady=8)
 
 label = tk.Label(root,
     text="Designed By:Arpit Mehrotra, SAP-ID: 590021974",
-    bg="#0f172a", fg="white", font=("Arial", 11))
+    bg="#0f172a", fg="white", font=("Times", 11))
 label.pack(pady=4)
 
 main_frame = tk.Frame(root, bg="#0f172a")
