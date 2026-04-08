@@ -6,5 +6,4 @@ def create_dict(list1, list2):
 
 list1 = ['a', 'b', 'c']
 list2 = [1, 2, 3]
-
 print(create_dict(list1, list2))

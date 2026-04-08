@@ -4,4 +4,3 @@ def sum_of_cubes(n):
         total += i * i * i
     return total
 print(sum_of_cubes(8))
-#
