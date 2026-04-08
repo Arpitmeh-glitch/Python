@@ -1,23 +1,20 @@
 import tkinter as tk
 import math
-from tkinterweb import HtmlFrame  # Make sure to pip install tkinterweb
+from tkinterweb import HtmlFrame 
 
 root = tk.Tk()
 root.title("Calc+br")
-root.geometry("480x700") # Increased height slightly for browser room
+root.geometry("480x700") 
 root.configure(bg="#0f172a")
 
 expression = ""
 
-# --- New Browser Components ---
 browser_frame = HtmlFrame(root)
-# Note: browser_frame is NOT packed yet
 
 def go_back():
     """Hides browser and brings back the calculator UI"""
     browser_frame.pack_forget()
     back_btn.pack_forget()
-    # Re-show calculator components
     entry.pack(fill="x", ipady=12, padx=10, pady=8)
     label.pack(pady=4)
     main_frame.pack(fill="both", expand=True, padx=10, pady=5)
@@ -25,7 +22,6 @@ def go_back():
 back_btn = tk.Button(root, text="← Back to Calculator", command=go_back, 
                      bg="#ef4444", fg="white", font=("Arial", 10, "bold"), relief="flat")
 
-# --- Existing Calculator Logic ---
 def press(num):
     global expression
     expression += str(num)
@@ -36,22 +32,18 @@ def equal():
     text = equation.get()
     
     try:
-        # WEBSITE LOGIC: If it contains a '.' and NO math operators, treat as URL
         if "." in text and not any(op in text for op in ["+", "-", "*", "/", ","]):
             if not (text.startswith("http://") or text.startswith("https://")):
                 text = "https://" + text
             
-            # Hide Calc UI
             entry.pack_forget()
             label.pack_forget()
             main_frame.pack_forget()
             
-            # Show Browser UI
             back_btn.pack(pady=5, anchor="nw", padx=10)
             browser_frame.pack(fill="both", expand=True)
             browser_frame.load_website(text)
         
-        # MATH LOGIC
         else:
             result = str(eval(expression))
             equation.set(result)
@@ -97,7 +89,6 @@ def mod():
         equation.set("Error")
         expression = ""
 
-# --- UI Setup ---
 equation = tk.StringVar()
 
 entry = tk.Entry(root,
@@ -115,7 +106,6 @@ label = tk.Label(root,
     bg="#0f172a", fg="white", font=("Arial", 11))
 label.pack(pady=4)
 
-# Renamed 'frame' to 'main_frame' to avoid confusion with the browser frame
 main_frame = tk.Frame(root, bg="#0f172a")
 main_frame.pack(fill="both", expand=True, padx=10, pady=5)
 
