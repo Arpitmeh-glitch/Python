@@ -1,21 +1,58 @@
 import tkinter as tk
 import math
-import re
-import webview
-import threading
+from tkinterweb import HtmlFrame 
 
 root = tk.Tk()
-root.title("Smart Calculator")
-root.geometry("480x620")
-root.configure(bg="#0f172a")
+root.title("Calc+br")
+root.geometry("480x700") 
+root.configure(bg="#0f172a",relief="sunken")
 
 expression = ""
-equation = tk.StringVar()
+
+browser_frame = HtmlFrame(root)
+def go_back():
+    """Hides browser and brings back the calculator UI"""
+    browser_frame.pack_forget()
+    back_btn.pack_forget()
+    entry.pack(fill="x", ipady=12, padx=10, pady=8)
+    label.pack(pady=4)
+    main_frame.pack(fill="both", expand=True, padx=10, pady=5)
+
+back_btn = tk.Button(root, text="← Back to Calculator", command=go_back, 
+                     bg="#ef4444", fg="white", font=("Arial", 10, "bold"), relief="flat")
 
 def press(num):
     global expression
     expression += str(num)
     equation.set(expression)
+
+def equal():
+    global expression
+    text = equation.get()
+    
+    try:
+        if "." in text and not any(op in text for op in ["+", "-", "*", "/", ","]):
+            if not (text.startswith("http://") or text.startswith("https://")):
+                text = "https://" + text
+            
+            entry.pack_forget()
+            label.pack_forget()
+            main_frame.pack_forget()
+            
+            back_btn.pack(pady=5, anchor="nw", padx=10)
+            browser_frame.pack(fill="both", expand=True)
+            browser_frame.load_website(text)
+            result = str(eval(expression))
+        
+
+        else:
+            result = str(eval(expression))
+            equation.set(result)
+            expression = result
+    except:
+        equation.set("Error")
+        expression = ""
+
 
 def clear():
     global expression
@@ -54,73 +91,38 @@ def mod():
         equation.set("Error")
         expression = ""
 
-def open_browser(url):
-    """This function handles the pywebview window creation"""
-    webview.create_window("Browser View", url, width=800, height=600)
-    webview.start()
-
-def equal():
-    global expression
-    expr = expression.strip()
-    if not expr: return
-
-    # 1. URL Detective Logic
-    domain_pattern = re.compile(r'^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}')
-    is_url = False
-    
-    if expr.startswith(("http://", "https://", "www.")):
-        is_url = True
-    elif domain_pattern.match(expr) and not any(op in expr for op in ['+', '*', '(', ')', '=']):
-        is_url = True
-
-    # 2. Route the Input
-    if is_url:
-        if not expr.startswith(("http://", "https://")):
-            expr = "https://" + expr
-        
-        equation.set("Opened in Browser")
-        expression = ""
-        
-        # We MUST run pywebview in a separate thread, otherwise it freezes Tkinter
-        browser_thread = threading.Thread(target=open_browser, args=(expr,), daemon=True)
-        browser_thread.start()
-        
-    else:
-        # 3. Standard Math Evaluation
-        try:
-            result = str(eval(expr))
-            equation.set(result)
-            expression = result
-        except:
-            equation.set("Error")
-            expression = ""
-
-# --- UI Setup ---
+equation = tk.StringVar()
 
 entry = tk.Entry(root,
-                 textvariable=equation,
-                 font=("Consolas", 22),
-                 bg="#020617",
-                 fg="#38bdf8",
-                 bd=0,
-                 insertwidth=2,
-                 justify="right")
+                  textvariable=equation,
+                  font=("Consolas", 22),
+                  bg="#020617",
+                  fg="#38bdf8",
+                  bd=2,
+                  insertwidth=4,
+                  justify="center")
 entry.pack(fill="x", ipady=12, padx=10, pady=8)
 
-frame = tk.Frame(root, bg="#0f172a")
-frame.pack(fill="both", expand=True, padx=10, pady=5)
+label = tk.Label(root,
+    text="UJ",
+    bg="gold", fg="white", font=("Times", 11))
+label.pack(pady=4)
+
+main_frame = tk.Frame(root, bg="#0f172a")
+main_frame.pack(fill="both", expand=True, padx=10, pady=5)
 
 for i in range(6):
-    frame.rowconfigure(i, weight=1, uniform="row")
-for j in range(4):
-    frame.columnconfigure(j, weight=1, uniform="col")
+    main_frame.rowconfigure(i, weight=1, uniform="row")
 
-btn_color = "#22acb0"
-op_color = "#dbc324"
-equal_color = "#a61fb3"
+for j in range(4):
+    main_frame.columnconfigure(j, weight=1, uniform="col")
+
+btn_color = "#2c61ca"
+op_color = "#6b7280"
+equal_color = "#22c55e"
 
 def create_button(text, row, col, cmd, bg):
-    tk.Button(frame,
+    tk.Button(main_frame,
               text=text,
               command=cmd,
               bg=bg,
@@ -133,15 +135,13 @@ buttons = [
     ('7',1,0), ('8',1,1), ('9',1,2), ('/',1,3),
     ('4',2,0), ('5',2,1), ('6',2,2), ('*',2,3),
     ('1',3,0), ('2',3,1), ('3',3,2), ('-',3,3),
-    ('0',4,0), ('.',4,1), (',',4,2), ('+',4,3)
+    ('0',4,0), ('.',4,1), ('C',4,2), ('+',4,3)
 ]
 
-# Note: Swapped 'C' for ',' in the grid to allow Pow(x,y) input.
-# Put clear button on the top row to make room.
-create_button("C", 0, 3, clear, "red")
-
 for (text,row,col) in buttons:
-    if text in ['+','-','*','/']:
+    if text == 'C':
+        create_button(text, row, col, clear, "#ef4444")
+    elif text in ['+','-','*','/']:
         create_button(text, row, col, lambda t=text: press(t), op_color)
     else:
         create_button(text, row, col, lambda t=text: press(t), btn_color)

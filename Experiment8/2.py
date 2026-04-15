@@ -10,7 +10,6 @@ root.configure(bg="#0f172a",relief="sunken")
 expression = ""
 
 browser_frame = HtmlFrame(root)
-
 def go_back():
     """Hides browser and brings back the calculator UI"""
     browser_frame.pack_forget()
@@ -43,7 +42,9 @@ def equal():
             back_btn.pack(pady=5, anchor="nw", padx=10)
             browser_frame.pack(fill="both", expand=True)
             browser_frame.load_website(text)
+            result = str(eval(expression))
         
+
         else:
             result = str(eval(expression))
             equation.set(result)
@@ -51,6 +52,7 @@ def equal():
     except:
         equation.set("Error")
         expression = ""
+
 
 def clear():
     global expression
@@ -97,7 +99,6 @@ entry = tk.Entry(root,
                   bg="#020617",
                   fg="#38bdf8",
                   bd=2,
-                  border="#b51acd",
                   insertwidth=4,
                   justify="center")
 entry.pack(fill="x", ipady=12, padx=10, pady=8)
@@ -116,7 +117,7 @@ for i in range(6):
 for j in range(4):
     main_frame.columnconfigure(j, weight=1, uniform="col")
 
-btn_color = "#e5e7eb"
+btn_color = "#2c61ca"
 op_color = "#6b7280"
 equal_color = "#22c55e"
 
