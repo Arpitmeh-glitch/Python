@@ -52,26 +52,26 @@ def health_score(df):
     print(f" Worst Day (High Calories): {worst_day}")
 
 
-def health_score_advanced(df):
-    daily = df.groupby("date").sum()
-    scores = []
+# def health_score_advanced(df):
+#     daily = df.groupby("date").sum()
+#     scores = []
 
-    for _, row in daily.iterrows():
-        score = 0
+#     for _, row in daily.iterrows():
+#         score = 0
 
-        if row["protein"] >= 50:
-            score += 3
-        if 1800 <= row["calories"] <= 2500:
-            score += 3
-        if row["carbs"] <= 250:
-            score += 2
+#         if row["protein"] >= 50:
+#             score += 3
+#         if 1800 <= row["calories"] <= 2500:
+#             score += 3
+#         if row["carbs"] <= 250:
+#             score += 2
 
-        score += 2  # meals logged
+#         score += 2  # meals logged
 
-        scores.append(score)
+#         scores.append(score)
 
-    avg_score = sum(scores) / len(scores)
-    print(f"\n🏥 Health Score: {avg_score:.2f} / 10")
+#     avg_score = sum(scores) / len(scores)
+#     print(f"\n Health Score: {avg_score:.2f} / 10")
 
 
 def weekly_trend(df):
@@ -146,7 +146,6 @@ def full_report():
     protein_analysis(df)
     carb_analysis(df)
     health_score(df)
-    health_score_advanced(df)
     weekly_trend(df)
     smart_insights(df)
     diet_recommendation(df)

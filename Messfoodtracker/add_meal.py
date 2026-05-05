@@ -2,41 +2,9 @@ from datetime import datetime
 from food_data import food_data
 from menu import mess_menu
 import csv
-def remove_meal():
-    try:
-        with open("meals.csv", "r") as f:
-            rows = list(csv.reader(f))
-
-        if not rows:
-            print(" No meals to delete.")
-            return
-
-        print("\n Saved Meals:")
-        for i, row in enumerate(rows, 1):
-            print(f"{i}. Date: {row[0]}, Day: {row[1]}, Meal: {row[2]}, Calories: {row[3]}")
-
-        choice = int(input("\nEnter meal number to delete: ")) - 1
-
-        if choice < 0 or choice >= len(rows):
-            print(" Invalid selection.")
-            return
-
-        removed = rows.pop(choice)
-
-        with open("meals.csv", "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerows(rows)
-
-        print(f" Removed meal: {removed[2]} on {removed[0]}")
-
-    except FileNotFoundError:
-        print(" No data file found.")
-    except Exception as e:
-        print(f" Error: {e}")
 def add_meal():
     print("\n1. Use Mess Menu")
     print("2. Add Custom Meal")
-    print("3. Remove Meal")
 
     choice = input("Enter choice: ")
 
