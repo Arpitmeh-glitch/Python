@@ -125,15 +125,22 @@ def diet_recommendation(df):
 
 def plot_calories(df):
     try:
+        df["date"] = pd.to_datetime(df["date"]).dt.date
         daily = df.groupby("date")["calories"].sum()
-        daily.plot(kind="bar")
-        plt.title("Daily Calories")
+
+        plt.figure()
+        plt.bar(daily.index, daily.values)
+
+        plt.xticks(rotation=45)
         plt.xlabel("Date")
         plt.ylabel("Calories")
+        plt.title("Daily Calories")
+
+        plt.tight_layout()
         plt.show()
+
     except:
         print("Error in plotting")
-
 
 def full_report():
     try:
