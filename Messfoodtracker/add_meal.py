@@ -2,81 +2,83 @@ from datetime import datetime
 from food_data import food_data
 from menu import mess_menu
 import csv
+
 def add_meal():
-    print("\n1. Use Mess Menu")
-    print("2. Add Custom Meal")
+    try:
+        print("\n1. Use Mess Menu")
+        print("2. Add Custom Meal")
 
-    choice = input("Enter choice: ")
+        choice = input("Enter choice: ")
 
-    total_cal, total_protein, total_carbs = 0, 0, 0
+        total_cal = 0
+        total_protein = 0
+        total_carbs = 0
 
-    
-    if choice == "1":
-        days = list(mess_menu.keys())
-        
-        print("\nSelect Day:")
-        for i, day in enumerate(days, 1):
-            print(f"{i}. {day}")
+        if choice == "1":
+            days = list(mess_menu.keys())
 
-        day_choice = int(input("Enter choice: ")) - 1
-        day = days[day_choice]
+            print("\nSelect Day:")
+            for i in range(len(days)):
+                print(i + 1, days[i])
 
-        meals = list(mess_menu[day].keys())
+            day_index = int(input("Enter choice: ")) - 1
+            day = days[day_index]
 
-        print("\nSelect Meal:")
-        for i, meal in enumerate(meals, 1):
-            print(f"{i}. {meal}")
+            meals = list(mess_menu[day].keys())
 
-        meal_choice = int(input("Enter choice: ")) - 1
-        meal = meals[meal_choice]
+            print("\nSelect Meal:")
+            for i in range(len(meals)):
+                print(i + 1, meals[i])
 
-        foods = mess_menu[day][meal]
+            meal_index = int(input("Enter choice: ")) - 1
+            meal = meals[meal_index]
 
-        print("\n Items:")
-        for food in foods:
-            if food in food_data:
-                data = food_data[food]
-                total_cal += data["calories"]
-                total_protein += data["protein"]
-                total_carbs += data["carbs"]
-            else:
-                print(f"No data for {food}")
+            foods = mess_menu[day][meal]
 
-   
-    elif choice == "2":
-        day = input("Enter day (e.g., monday): ")
-        meal = input("Enter meal type (breakfast/lunch/snacks/dinner): ")
+            print("\nItems:")
+            for food in foods:
+                if food in food_data:
+                    data = food_data[food]
+                    total_cal += data["calories"]
+                    total_protein += data["protein"]
+                    total_carbs += data["carbs"]
+                else:
+                    print("No data for", food)
 
-        num_items = int(input("How many items in your meal? "))
+        elif choice == "2":
+            day = input("Enter day: ")
+            meal = input("Enter meal type: ")
 
-        print("\nEnter nutritional values per item:")
+            count = int(input("How many items: "))
 
-        for i in range(num_items):
-            print(f"\nItem {i+1}:")
-            name = input("Name: ")
+            for i in range(count):
+                name = input("Name: ")
+                cal = float(input("Calories: "))
+                protein = float(input("Protein: "))
+                carbs = float(input("Carbs: "))
 
-            cal = float(input("Calories: "))
-            protein = float(input("Protein: "))
-            carbs = float(input("Carbs: "))
+                total_cal += cal
+                total_protein += protein
+                total_carbs += carbs
 
-            total_cal += cal
-            total_protein += protein
-            total_carbs += carbs
-    else:
-        print(" Invalid choice")
-        return
+        else:
+            print("Invalid choice")
+            return
 
-    
-    print(f"\n Total Calories: {total_cal}")
-    print(f" Protein: {total_protein}")
-    print(f" Carbs: {total_carbs}")
+        print("\nCalories:", total_cal)
+        print("Protein:", total_protein)
+        print("Carbs:", total_carbs)
 
-    today = datetime.now().date()
+        today = datetime.now().date()
 
-   
-    
-    with open("meals.csv", "a", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow([today, day, meal, total_cal, total_protein, total_carbs])
+        try:
+            file = open("meals.csv", "a", newline="")
+            writer = csv.writer(file)
+            writer.writerow([today, day, meal, total_cal, total_protein, total_carbs])
+            file.close()
+            print("Saved")
+        except:
+            print("Error saving data")
 
-    print(" Meal saved successfully!")
+    except:
+        print("Invalid input")
