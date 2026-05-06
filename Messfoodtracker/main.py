@@ -3,7 +3,7 @@ from add_meal import add_meal
 
 while True:
     print("\n==============================")
-    print("   STUDENT DIET TRACKER")
+    print("   ARPIT'S DIET TRACKER")
     print("==============================")
     print("1. Add Meal")
     print("2. Analyze Diet")
